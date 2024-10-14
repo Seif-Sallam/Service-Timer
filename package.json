@@ -1,7 +1,7 @@
 {
   "homepage": "https://seif-sallam.github.io/Service-Timer/",
   "name": "service-timer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "/src/index.js",
   "scripts": {
     "predeploy": "npm run build",
