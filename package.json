@@ -2,7 +2,7 @@
   "homepage": "https://seif-sallam.github.io/Service-Timer/",
   "name": "service-timer",
   "version": "0.0.2",
-  "main": "/src/index.js",
+  "main": "/src/index.jsx",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
