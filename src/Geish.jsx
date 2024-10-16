@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Calendar from './Calendar'
+import { NUMBER_OF_DAYS_OFF, NUMBER_OF_DAYS_WORK } from './Global'
 
 import "./styles.css";
 
@@ -10,11 +11,12 @@ function getAllAgazat() {
     let agazat = [firstAgaza]
     while (firstAgaza < geish) {
         let nextAgaza = new Date(firstAgaza)
-        nextAgaza.setDate(nextAgaza.getDate() + 6) // 6 days of agaza
-        nextAgaza.setDate(nextAgaza.getDate() + 22)
+        nextAgaza.setDate(nextAgaza.getDate() + NUMBER_OF_DAYS_OFF)
+        nextAgaza.setDate(nextAgaza.getDate() + NUMBER_OF_DAYS_WORK)
 
         agazat.push(nextAgaza)
         firstAgaza = nextAgaza
+        // Last day of all geish
         if (firstAgaza.getMonth() == 7 && firstAgaza.getDate() >= 15) {
             break
         }
@@ -27,7 +29,7 @@ function renderAgazat(agazat) {
     let output = [];
     for(let i = 0; i < agazat.length; i++) {
         let agazaEnd = new Date(agazat[i])
-        agazaEnd.setDate(agazaEnd.getDate() + 6)
+        agazaEnd.setDate(agazaEnd.getDate() + NUMBER_OF_DAYS_OFF)
         let passed = agazat[i] < new Date()
         output.push(<tr><td>{i + 1}</td><td>{renderDate(agazat[i])}</td><td>{renderDate(agazaEnd)}</td><td>{(passed) ? '✅' : '❌'}</td></tr>)
     }
@@ -90,7 +92,7 @@ export default function Geish() {
     for (let i = 0; i < agazatArray.length; i++) {
         let start = agazatArray[i]
         let end = new Date(agazatArray[i])
-        end.setDate(end.getDate() + 6)
+        end.setDate(end.getDate() + NUMBER_OF_DAYS_OFF)
         allAgazat.push([start, end])
     }
 

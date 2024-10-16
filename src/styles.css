@@ -202,14 +202,29 @@ td {
   justify-content: space-between;
   align-items: flex-start;
   padding: 20px;
+  flex-wrap: wrap; /* Allow wrapping for responsiveness */
+  height: 100vh; /* Ensure it takes the full height of the viewport */
+  overflow: auto; /* Make the container scrollable */
 }
 
 .geish-container {
-  flex: 1;
-  width: 800px;
+  flex: 3; /* 3 parts out of 4 */
+  width: 100%; /* Ensure it takes full width on smaller screens */
   margin-right: 20px;
+  min-width: 650px;
+  overflow: auto; /* Make the container scrollable */
 }
 
 .calendar-container {
-  flex: 0 0 400px; /* Fixed width for the calendar */
+  flex: 1; /* 1 part out of 4 */
+  width: 100%; /* Ensure it takes full width on smaller screens */
+  max-width: 400px; /* Optional: limit the maximum width */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .geish-container, .calendar-container {
+    flex: 1 1 100%; /* Take full width on smaller screens */
+    margin-right: 0; /* Remove margin on smaller screens */
+  }
 }
