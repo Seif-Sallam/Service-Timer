@@ -226,5 +226,7 @@ td {
   .geish-container, .calendar-container {
     flex: 1 1 100%; /* Take full width on smaller screens */
     margin-right: 0; /* Remove margin on smaller screens */
+    /* Add scroll bar for smaller screens */
+    overflow: auto;
   }
 }

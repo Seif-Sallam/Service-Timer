@@ -9,10 +9,13 @@ function getAllAgazat() {
 
     let firstAgaza = new Date(2024, 9, 12, 0, 0, 0)
     let agazat = [firstAgaza]
+    let index = 0;
     while (firstAgaza < geish) {
         let nextAgaza = new Date(firstAgaza)
         nextAgaza.setDate(nextAgaza.getDate() + NUMBER_OF_DAYS_OFF)
         nextAgaza.setDate(nextAgaza.getDate() + NUMBER_OF_DAYS_WORK)
+        if (index === 1)
+            nextAgaza.setDate(nextAgaza.getDate() + 1)
 
         agazat.push(nextAgaza)
         firstAgaza = nextAgaza
@@ -20,6 +23,7 @@ function getAllAgazat() {
         if (firstAgaza.getMonth() == 7 && firstAgaza.getDate() >= 15) {
             break
         }
+        index += 1
     }
 
     return agazat
@@ -86,13 +90,16 @@ export default function Geish() {
     // Update the distance every second
     setInterval(calculateDistance, 1000)
 
-
     let agazatArray = getAllAgazat()
     let allAgazat = []
     for (let i = 0; i < agazatArray.length; i++) {
         let start = agazatArray[i]
-        let end = new Date(agazatArray[i])
-        end.setDate(end.getDate() + NUMBER_OF_DAYS_OFF)
+        if (i === 1)
+            start.setDate(start.getDate() + 1)
+        let end = new Date(start)
+        end = new Date(end.setDate(end.getDate() + NUMBER_OF_DAYS_OFF))
+        if (end.getDay() > 20 && end.getMonth() == 7)
+            continue
         allAgazat.push([start, end])
     }
 
@@ -104,10 +111,10 @@ export default function Geish() {
             // Count the number of days between start and end that did not pass yet
             let now = new Date()
             if (start > now) {
-            count += (end - start) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
+                count += (end - start) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
             }
             else if (start < now && end > now) {
-            count += (end - now) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
+                count += (end - now) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
             }
         }
         return Math.ceil(count); // Round up to the nearest whole number
@@ -151,6 +158,14 @@ export default function Geish() {
                         </tr>
                         {agazatTable}
                     </table>
+                    <div style={{textAlign:'left', fontSize: '12px'}}>
+                        <ul>
+                            <li>The dates are very much approximate, and the actual dates may vary by a few days.</li>
+                            <li>The dates are based on the current situation and the current rules, and they may change in the future.</li>
+                            <li>I may change my unit entirely which will change the rules of the agazat.</li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
             <div className="calendar-container">
