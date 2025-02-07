@@ -204,7 +204,6 @@ td {
   padding: 20px;
   flex-wrap: wrap; /* Allow wrapping for responsiveness */
   height: 100vh; /* Ensure it takes the full height of the viewport */
-  overflow: auto; /* Make the container scrollable */
 }
 
 .geish-container {
@@ -212,7 +211,6 @@ td {
   width: 100%; /* Ensure it takes full width on smaller screens */
   margin-right: 20px;
   min-width: 650px;
-  overflow: auto; /* Make the container scrollable */
 }
 
 .calendar-container {
