@@ -20,7 +20,7 @@ function getAllAgazat() {
         agazat.push(nextAgaza)
         firstAgaza = nextAgaza
         // Last day of all geish
-        if (firstAgaza.getMonth() == 7 && firstAgaza.getDate() >= 15) {
+        if (firstAgaza.getMonth() >= 6 && firstAgaza.getDate() >= 1 && firstAgaza.getFullYear() >= 2025) {
             break
         }
         index += 1
@@ -31,11 +31,13 @@ function getAllAgazat() {
 
 function renderAgazat(agazat) {
     let output = [];
+    let geishEnd = new Date(2025, 7, 20, 0, 0, 0)
     for(let i = 0; i < agazat.length; i++) {
         let agazaEnd = new Date(agazat[i])
         agazaEnd.setDate(agazaEnd.getDate() + NUMBER_OF_DAYS_OFF)
         let passed = agazat[i] < new Date()
-        output.push(<tr><td>{i + 1}</td><td>{renderDate(agazat[i])}</td><td>{renderDate(agazaEnd)}</td><td>{(passed) ? '✅' : '❌'}</td></tr>)
+        let remainingAfter = Math.ceil((geishEnd - agazaEnd) / (1000 * 60 * 60 * 24))
+        output.push(<tr><td>{i + 1}</td><td>{renderDate(agazat[i])}</td><td>{renderDate(agazaEnd)}</td><td>{(passed) ? '✅' : '❌'}</td><td>{remainingAfter}</td></tr>)
     }
     return output
 }
@@ -45,7 +47,7 @@ function renderDate(date)
     return `${date.getFullYear()} / ${date.getMonth() + 1} / ${date.getDate()}`
 }
 
-function TimerTable({ months, days, hours, minutes, seconds, agazat }) {
+function TimerTable({ months, days, hours, minutes, seconds, agazat, timeUntilNextAgaza }) {
     return (<table className="timer-table">
         <tr>
             <th>Months</th>
@@ -54,6 +56,7 @@ function TimerTable({ months, days, hours, minutes, seconds, agazat }) {
             <th>Minutes</th>
             <th>Seconds</th>
             <th>Agazat</th>
+            <th>Time until next agaza</th>
         </tr>
         <tr>
             <td>{months}</td>
@@ -62,9 +65,27 @@ function TimerTable({ months, days, hours, minutes, seconds, agazat }) {
             <td>{minutes}</td>
             <td>{seconds}</td>
             <td>{agazat}</td>
+            <td>{timeUntilNextAgaza}</td>
         </tr>
     </table>)
 }
+
+function getLastPassedAgaza(agazat) {
+    let lastPassedAgaza = agazat[0]
+    for (let i = 0; i < agazat.length; i++) {
+        if (agazat[i] < new Date())
+        {
+            continue
+        }
+        else
+        {
+            lastPassedAgaza = agazat[i]
+            break
+        }
+    }
+    return lastPassedAgaza
+}
+
 
 export default function Geish() {
     let [month, setMonth] = useState(0)
@@ -98,8 +119,6 @@ export default function Geish() {
             start.setDate(start.getDate() + 1)
         let end = new Date(start)
         end = new Date(end.setDate(end.getDate() + NUMBER_OF_DAYS_OFF))
-        if (end.getDay() > 20 && end.getMonth() == 7)
-            continue
         allAgazat.push([start, end])
     }
 
@@ -124,6 +143,11 @@ export default function Geish() {
 
     let agazatTable = renderAgazat(agazatArray)
 
+    let lastPassedAgaza = getLastPassedAgaza(agazatArray)
+
+    let timeUntilNextAgaza = Math.floor((lastPassedAgaza - new Date()) / (1000 * 60 * 60 * 24))
+    if (timeUntilNextAgaza > 21)
+        timeUntilNextAgaza = "In Agaza :))"
 
     // Render the Geish component
     return (
@@ -138,6 +162,7 @@ export default function Geish() {
                         minutes={minutes}
                         seconds={seconds}
                         agazat={agazat}
+                        timeUntilNextAgaza={timeUntilNextAgaza}
                     />
                     <table className="stat-table">
                         <tr>
@@ -155,6 +180,7 @@ export default function Geish() {
                             <th>From</th>
                             <th>To</th>
                             <th>Passed?</th>
+                            <th>Days Left</th>
                         </tr>
                         {agazatTable}
                     </table>
@@ -163,6 +189,7 @@ export default function Geish() {
                             <li>The dates are very much approximate, and the actual dates may vary by a few days.</li>
                             <li>The dates are based on the current situation and the current rules, and they may change in the future.</li>
                             <li>I may change my unit entirely which will change the rules of the agazat.</li>
+                            <li>It is calculated based on the day: 20th of August 2025</li>
                         </ul>
                     </div>
 

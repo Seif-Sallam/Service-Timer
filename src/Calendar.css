@@ -78,3 +78,8 @@
   .calendar-footer  {
     font-size: 1.0rem;
   }
+
+  .geish-end-day {
+    color: red;
+    background-color: lime
+  }

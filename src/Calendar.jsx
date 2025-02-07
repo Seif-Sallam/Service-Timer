@@ -81,6 +81,9 @@ export default function Calendar({ allAgazat }) {
               else if (isAgaza(day, currentMonth, currentYear)) {
                   style += ' agaza-day';
                 }
+              else if (day === 20 && currentMonth === 7 && currentYear === 2025) {
+                  style += ' geish-end-day';
+              }
 
               return <div key={index} className={style}>{day}</div>
             }
