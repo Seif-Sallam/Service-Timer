@@ -215,7 +215,7 @@ td {
 
 .calendar-container {
   flex: 1; /* 1 part out of 4 */
-  width: 100%; /* Ensure it takes full width on smaller screens */
+  width: 100vh; /* Ensure it takes full width on smaller screens */
   max-width: 400px; /* Optional: limit the maximum width */
 }
 

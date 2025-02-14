@@ -81,5 +81,10 @@
 
   .geish-end-day {
     color: red;
-    background-color: lime
+    background-color: lime;
+  }
+
+  .special-day{
+    color: red;
+    background-color: yellow;
   }

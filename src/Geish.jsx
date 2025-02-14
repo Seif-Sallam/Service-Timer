@@ -6,11 +6,14 @@ import "./styles.css";
 
 function getAllAgazat() {
     let geish = new Date(2025, 7, 20, 0, 0, 0)
-
     let firstAgaza = new Date(2024, 9, 12, 0, 0, 0)
     let agazat = [firstAgaza]
     let index = 0;
     while (firstAgaza < geish) {
+        if (index === 4) {
+            let today = new Date(2025, 1, 13, 0, 0, 0)
+            agazat.push(today)
+        }
         let nextAgaza = new Date(firstAgaza)
         nextAgaza.setDate(nextAgaza.getDate() + NUMBER_OF_DAYS_OFF)
         nextAgaza.setDate(nextAgaza.getDate() + NUMBER_OF_DAYS_WORK)
@@ -37,7 +40,7 @@ function renderAgazat(agazat) {
         agazaEnd.setDate(agazaEnd.getDate() + NUMBER_OF_DAYS_OFF)
         let passed = agazat[i] < new Date()
         let remainingAfter = Math.ceil((geishEnd - agazaEnd) / (1000 * 60 * 60 * 24))
-        output.push(<tr><td>{i + 1}</td><td>{renderDate(agazat[i])}</td><td>{renderDate(agazaEnd)}</td><td>{(passed) ? '✅' : '❌'}</td><td>{remainingAfter}</td></tr>)
+        output.push(<tr><td>{(i === 5) ? "6?" : i + 1}</td><td>{renderDate(agazat[i])}</td><td>{renderDate(agazaEnd)}</td><td>{(passed) ? '✅' : '❌'}</td><td>{remainingAfter}</td></tr>)
     }
     return output
 }
@@ -84,6 +87,17 @@ function getLastPassedAgaza(agazat) {
         }
     }
     return lastPassedAgaza
+}
+
+function insideAgaza(allAgazat) {
+    let now = new Date()
+    for (let i = 0; i < allAgazat.length; i++) {
+        let start = allAgazat[i][0]
+        let end = allAgazat[i][1]
+        if (start < now && end > now)
+            return true
+    }
+    return false
 }
 
 
@@ -146,7 +160,7 @@ export default function Geish() {
     let lastPassedAgaza = getLastPassedAgaza(agazatArray)
 
     let timeUntilNextAgaza = Math.floor((lastPassedAgaza - new Date()) / (1000 * 60 * 60 * 24))
-    if (timeUntilNextAgaza > 21)
+    if (insideAgaza(allAgazat))
         timeUntilNextAgaza = "In Agaza :))"
 
     // Render the Geish component
@@ -154,7 +168,7 @@ export default function Geish() {
         <div className="main-container">
             <div className="geish-container">
                 <div className="timer-box">
-                    <div className="timer-header">Hanet ya Seifff</div>
+                    <div className="timer-header">Hanet ya Sayofa</div>
                     <TimerTable
                         months={month}
                         days={days}
@@ -190,6 +204,7 @@ export default function Geish() {
                             <li>The dates are based on the current situation and the current rules, and they may change in the future.</li>
                             <li>I may change my unit entirely which will change the rules of the agazat.</li>
                             <li>It is calculated based on the day: 20th of August 2025</li>
+                            <li>The "?" means I am not sure if I will get this Agaza or not.</li>
                         </ul>
                     </div>
 

@@ -78,6 +78,9 @@ export default function Calendar({ allAgazat }) {
                    && currentYear === new Date().getFullYear()) {
                   style += ' current-day';
               }
+              else if (day >= 13 && day <= 19 && currentMonth === 1 && currentYear === 2025) {
+                style += ' special-day';
+              }
               else if (isAgaza(day, currentMonth, currentYear)) {
                   style += ' agaza-day';
                 }
@@ -97,6 +100,9 @@ export default function Calendar({ allAgazat }) {
           <br />
             <span style={{'color': 'violet'}}>* Agazat</span>
           <br />
+            <span style={{'color': 'red', "backgroundColor": "lime"}}>* Geish End</span>
+          <br />
+            <span style={{'color': 'red', 'backgroundColor':"yellow"}}>* Special Day</span>
         </p>
       </div>
     </div>
