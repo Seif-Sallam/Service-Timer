@@ -40,7 +40,7 @@ function renderAgazat(agazat) {
         agazaEnd.setDate(agazaEnd.getDate() + NUMBER_OF_DAYS_OFF)
         let passed = agazat[i] < new Date()
         let remainingAfter = Math.ceil((geishEnd - agazaEnd) / (1000 * 60 * 60 * 24))
-        output.push(<tr><td>{(i === 5) ? "6?" : i + 1}</td><td>{renderDate(agazat[i])}</td><td>{renderDate(agazaEnd)}</td><td>{(passed) ? '✅' : '❌'}</td><td>{remainingAfter}</td></tr>)
+        output.push(<tr><td>{(i === 6) ? "7?" : i + 1}</td><td>{renderDate(agazat[i])}</td><td>{renderDate(agazaEnd)}</td><td>{(passed) ? '✅' : '❌'}</td><td>{remainingAfter}</td></tr>)
     }
     return output
 }
