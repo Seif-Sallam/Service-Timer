@@ -39,7 +39,7 @@ function renderAgazat(agazat) {
         let agazaEnd = new Date(agazat[i])
         agazaEnd.setDate(agazaEnd.getDate() + NUMBER_OF_DAYS_OFF)
         let passed = agazat[i] < new Date()
-        let remainingAfter = Math.ceil((geishEnd - agazaEnd) / (1000 * 60 * 60 * 24))
+        let remainingAfter = Math.floor((geishEnd - agazaEnd) / (1000 * 60 * 60 * 24))
         output.push(<tr><td>{(i === 6) ? "7?" : i + 1}</td><td>{renderDate(agazat[i])}</td><td>{renderDate(agazaEnd)}</td><td>{(passed) ? '✅' : '❌'}</td><td>{remainingAfter}</td></tr>)
     }
     return output
@@ -100,7 +100,6 @@ function insideAgaza(allAgazat) {
     return false
 }
 
-
 export default function Geish() {
     let [month, setMonth] = useState(0)
     let [days, setDays] = useState(0)
@@ -136,25 +135,7 @@ export default function Geish() {
         allAgazat.push([start, end])
     }
 
-    const countNumberOfAgazat = (allAgazat) => {
-        let count = 0
-        for (let i = 0; i < allAgazat.length; i++) {
-            let start = allAgazat[i][0]
-            let end = allAgazat[i][1]
-            // Count the number of days between start and end that did not pass yet
-            let now = new Date()
-            if (start > now) {
-                count += (end - start) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
-            }
-            else if (start < now && end > now) {
-                count += (end - now) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
-            }
-        }
-        return Math.ceil(count); // Round up to the nearest whole number
-    }
-
-    let numberOfAgazat = countNumberOfAgazat(allAgazat)
-
+    let agazatDaysCount = agazat * 7
     let agazatTable = renderAgazat(agazatArray)
 
     let lastPassedAgaza = getLastPassedAgaza(agazatArray)
@@ -184,8 +165,8 @@ export default function Geish() {
                             <th>Geish Days</th>
                         </tr>
                         <tr>
-                            <td>{numberOfAgazat}</td>
-                            <td>{days - numberOfAgazat}</td>
+                            <td>{agazatDaysCount}</td>
+                            <td>{days - (agazatDaysCount)}</td>
                         </tr>
                     </table>
                     <table className="agazat-table">

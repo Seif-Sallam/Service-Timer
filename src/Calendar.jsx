@@ -2,6 +2,26 @@
 import React, { useState } from 'react';
 import './Calendar.css';
 
+const daysIDidNotGet = [
+  new Date(2025, 0, 5, 0, 0, 0),
+  new Date(2025, 1, 2, 0, 0, 0),
+  new Date(2025, 2, 2, 0, 0, 0),
+  new Date(2025, 2, 3, 0, 0, 0),
+  new Date(2025, 2, 4, 0, 0, 0),
+]
+
+function isDateIDidnotGet(day, month, year) {
+  for (let i = 0; i < daysIDidNotGet.length; i++) {
+      if (daysIDidNotGet[i].getDate() === day &&
+          daysIDidNotGet[i].getMonth() === month &&
+          daysIDidNotGet[i].getFullYear() === year)
+      {
+          return true
+      }
+  }
+  return false
+}
+
 // Calendar Component
 export default function Calendar({ allAgazat }) {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -78,6 +98,9 @@ export default function Calendar({ allAgazat }) {
                    && currentYear === new Date().getFullYear()) {
                   style += ' current-day';
               }
+              else if (isDateIDidnotGet(day, currentMonth, currentYear)) {
+                  style += ' not-get-day';
+              }
               else if (day >= 13 && day <= 19 && currentMonth === 1 && currentYear === 2025) {
                 style += ' special-day';
               }
@@ -103,6 +126,8 @@ export default function Calendar({ allAgazat }) {
             <span style={{'color': 'red', "backgroundColor": "lime"}}>* Geish End</span>
           <br />
             <span style={{'color': 'red', 'backgroundColor':"yellow"}}>* Special Day</span>
+          <br />
+            <span style={{'color': 'lime', 'backgroundColor':"#a90000a0"}}>* Days I didn't get</span>
         </p>
       </div>
     </div>
