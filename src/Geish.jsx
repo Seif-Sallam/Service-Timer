@@ -139,6 +139,7 @@ export default function Geish() {
     let agazatTable = renderAgazat(agazatArray)
 
     let lastPassedAgaza = getLastPassedAgaza(agazatArray)
+    let geishDays = days - (agazatDaysCount);
 
     let timeUntilNextAgaza = Math.floor((lastPassedAgaza - new Date()) / (1000 * 60 * 60 * 24))
     if (insideAgaza(allAgazat))
@@ -166,7 +167,7 @@ export default function Geish() {
                         </tr>
                         <tr>
                             <td>{agazatDaysCount}</td>
-                            <td>{days - (agazatDaysCount)}</td>
+                            <td>{geishDays}</td>
                         </tr>
                     </table>
                     <table className="agazat-table">

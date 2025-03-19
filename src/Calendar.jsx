@@ -10,6 +10,28 @@ const daysIDidNotGet = [
   new Date(2025, 2, 4, 0, 0, 0),
 ]
 
+const specialDays = [
+  new Date(2025, 1, 5, 0 ,0 ,0),
+  new Date(2025, 1, 6, 0 ,0 ,0),
+  new Date(2025, 1, 7, 0 ,0 ,0),
+  new Date(2025, 1, 8, 0 ,0 ,0),
+  new Date(2025, 1, 13, 0 ,0 ,0),
+  new Date(2025, 1, 14, 0 ,0 ,0),
+  new Date(2025, 1, 15, 0 ,0 ,0),
+  new Date(2025, 1, 16, 0 ,0 ,0),
+  new Date(2025, 1, 17, 0 ,0 ,0),
+  new Date(2025, 1, 18, 0 ,0 ,0),
+  new Date(2025, 1, 19, 0 ,0 ,0),
+  new Date(2025, 2, 12, 0 ,0 ,0),
+  new Date(2025, 2, 13, 0 ,0 ,0),
+  new Date(2025, 2, 14, 0 ,0 ,0),
+  new Date(2025, 2, 15, 0 ,0 ,0),
+  new Date(2025, 2, 19, 0 ,0 ,0),
+  new Date(2025, 2, 20, 0 ,0 ,0),
+  new Date(2025, 2, 21, 0 ,0 ,0),
+  new Date(2025, 2, 22, 0 ,0 ,0),
+]
+
 function isDateIDidnotGet(day, month, year) {
   for (let i = 0; i < daysIDidNotGet.length; i++) {
       if (daysIDidNotGet[i].getDate() === day &&
@@ -20,6 +42,18 @@ function isDateIDidnotGet(day, month, year) {
       }
   }
   return false
+}
+
+function isASpecialDay(day, month, year) {
+  for (let i = 0; i < specialDays.length; i++) {
+    if (specialDays[i].getDate() === day &&
+        specialDays[i].getMonth() === month &&
+        specialDays[i].getFullYear() === year)
+    {
+        return true
+    }
+}
+return false
 }
 
 // Calendar Component
@@ -101,7 +135,7 @@ export default function Calendar({ allAgazat }) {
               else if (isDateIDidnotGet(day, currentMonth, currentYear)) {
                   style += ' not-get-day';
               }
-              else if (day >= 13 && day <= 19 && currentMonth === 1 && currentYear === 2025) {
+              else if (isASpecialDay(day, currentMonth, currentYear)) {
                 style += ' special-day';
               }
               else if (isAgaza(day, currentMonth, currentYear)) {
