@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Calendar from './Calendar'
 import { NUMBER_OF_DAYS_OFF, NUMBER_OF_DAYS_WORK } from './Global'
+import { isASpecialDay } from './Calendar'
 
 import "./styles.css";
 
@@ -39,8 +40,9 @@ function renderAgazat(agazat) {
         let agazaEnd = new Date(agazat[i])
         agazaEnd.setDate(agazaEnd.getDate() + NUMBER_OF_DAYS_OFF)
         let passed = agazat[i] < new Date()
+
         let remainingAfter = Math.floor((geishEnd - agazaEnd) / (1000 * 60 * 60 * 24))
-        output.push(<tr><td>{(i === 6) ? "7?" : i + 1}</td><td>{renderDate(agazat[i])}</td><td>{renderDate(agazaEnd)}</td><td>{(passed) ? '✅' : '❌'}</td><td>{remainingAfter}</td></tr>)
+        output.push(<tr><td>{(i === 6) ? "7?" : i + 1}</td><td>{renderDate(agazat[i])}</td><td>{renderDate(agazaEnd)}</td><td>{(i === 6) ? '😞' : (passed) ? '✅' : '❌'}</td><td>{remainingAfter}</td></tr>)
     }
     return output
 }
@@ -142,8 +144,12 @@ export default function Geish() {
     let geishDays = days - (agazatDaysCount);
 
     let timeUntilNextAgaza = Math.floor((lastPassedAgaza - new Date()) / (1000 * 60 * 60 * 24))
+
+    let today = new Date()
     if (insideAgaza(allAgazat))
         timeUntilNextAgaza = "In Agaza :))"
+    else if (isASpecialDay(today.getDate(), today.getMonth(), today.getFullYear()))
+        timeUntilNextAgaza = "SPECIAL DAY"
 
     // Render the Geish component
     return (

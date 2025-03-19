@@ -44,7 +44,7 @@ function isDateIDidnotGet(day, month, year) {
   return false
 }
 
-function isASpecialDay(day, month, year) {
+export function isASpecialDay(day, month, year) {
   for (let i = 0; i < specialDays.length; i++) {
     if (specialDays[i].getDate() === day &&
         specialDays[i].getMonth() === month &&
