@@ -52,10 +52,11 @@ function renderDate(date)
     return `${date.getFullYear()} / ${date.getMonth() + 1} / ${date.getDate()}`
 }
 
-function TimerTable({ months, days, hours, minutes, seconds, agazat, timeUntilNextAgaza }) {
+function TimerTable({ months, weeks, days, hours, minutes, seconds, agazat, timeUntilNextAgaza }) {
     return (<table className="timer-table">
         <tr>
             <th>Months</th>
+            <th>Weeks</th>
             <th>Days</th>
             <th>Hours</th>
             <th>Minutes</th>
@@ -65,6 +66,7 @@ function TimerTable({ months, days, hours, minutes, seconds, agazat, timeUntilNe
         </tr>
         <tr>
             <td>{months}</td>
+            <td>{weeks}</td>
             <td>{days}</td>
             <td>{hours}</td>
             <td>{minutes}</td>
@@ -104,6 +106,7 @@ function insideAgaza(allAgazat) {
 
 export default function Geish() {
     let [month, setMonth] = useState(0)
+    let [weeks, setWeeks] = useState(0)
     let [days, setDays] = useState(0)
     let [hours, setHours] = useState(0)
     let [minutes, setMinutes] = useState(0)
@@ -117,6 +120,7 @@ export default function Geish() {
 
         setMonth(Math.floor(distance / (1000 * 60 * 60 * 24 * 30)))
         setDays(Math.floor(distance / (1000 * 60 * 60 * 24)))
+        setWeeks(Math.floor(days / 7))
         setHours(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)))
         setMinutes(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)))
         setSeconds(Math.floor((distance % (1000 * 60)) / 1000))
@@ -159,6 +163,7 @@ export default function Geish() {
                     <div className="timer-header">Hanet ya Sayofa</div>
                     <TimerTable
                         months={month}
+                        weeks={weeks}
                         days={days}
                         hours={hours}
                         minutes={minutes}
