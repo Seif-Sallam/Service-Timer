@@ -7,10 +7,11 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  margin: 20px;
+  margin: 0; /* Remove default margin */
   background-color: #f0f0f0;
   font-family: sans-serif;
   padding: 0;
+  overflow: hidden; /* Prevent scrolling if not needed */
 }
 
 h1 {
@@ -204,12 +205,16 @@ td {
   padding: 20px;
   flex-wrap: wrap; /* Allow wrapping for responsiveness */
   height: 100vh; /* Ensure it takes the full height of the viewport */
+  transform-origin: center; /* Center the scaling horizontally and vertically */
+  transition: transform 0.3s ease-in-out;
+  width: 100%; /* Ensure it spans the full width of the screen */
 }
 
 .geish-container {
   flex: 3; /* 3 parts out of 4 */
   width: 100%; /* Ensure it takes full width on smaller screens */
   margin-right: 20px;
+  margin-left: 50px;
   min-width: 650px;
 }
 
@@ -226,5 +231,14 @@ td {
     margin-right: 0; /* Remove margin on smaller screens */
     /* Add scroll bar for smaller screens */
     overflow: auto;
+  }
+  .main-container {
+    transform: scale(0.8); /* Shrink to 80% of its original size */
+  }
+}
+
+@media (max-width: 480px) {
+  .main-container {
+    transform: scale(0.6); /* Shrink to 60% of its original size */
   }
 }

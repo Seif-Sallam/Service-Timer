@@ -1,50 +1,35 @@
 import { useState } from 'react'
 import Calendar from './Calendar'
 import { NUMBER_OF_DAYS_OFF, NUMBER_OF_DAYS_WORK } from './Global'
-import { isASpecialDay } from './Calendar'
+import { isASpecialDay, specialDays, daysIDidNotGet } from './Calendar'
 
 import "./styles.css";
 
-function getAllAgazat() {
+function getAllAgazatStart() {
     let geish = new Date(2025, 7, 20, 0, 0, 0)
     let firstAgaza = new Date(2024, 9, 12, 0, 0, 0)
-    let agazat = [firstAgaza]
+    let agazat = []
     let index = 0;
     while (firstAgaza < geish) {
-        if (index === 4) {
-            let today = new Date(2025, 1, 13, 0, 0, 0)
-            agazat.push(today)
+        if (index === 1) {
+            firstAgaza.setDate(firstAgaza.getDate() + 1)
         }
-        let nextAgaza = new Date(firstAgaza)
-        nextAgaza.setDate(nextAgaza.getDate() + NUMBER_OF_DAYS_OFF)
-        nextAgaza.setDate(nextAgaza.getDate() + NUMBER_OF_DAYS_WORK)
-        if (index === 1)
-            nextAgaza.setDate(nextAgaza.getDate() + 1)
-
-        agazat.push(nextAgaza)
-        firstAgaza = nextAgaza
+        else if (index === 4) {
+            firstAgaza = (new Date(2025, 1, 13, 0, 0, 0))
+        }
+        else if (index === 5) {
+            firstAgaza = new Date(2025, 3, 7, 0, 0, 0)
+        }
         // Last day of all geish
-        if (firstAgaza.getMonth() >= 6 && firstAgaza.getDate() >= 1 && firstAgaza.getFullYear() >= 2025) {
+        if (firstAgaza.getMonth() >= 8 && firstAgaza.getDate() >= 1 && firstAgaza.getFullYear() >= 2025) {
             break
         }
+        agazat.push(new Date(firstAgaza))
+        firstAgaza.setDate(firstAgaza.getDate() + NUMBER_OF_DAYS_OFF)
+        firstAgaza.setDate(firstAgaza.getDate() + NUMBER_OF_DAYS_WORK)
         index += 1
     }
-
     return agazat
-}
-
-function renderAgazat(agazat) {
-    let output = [];
-    let geishEnd = new Date(2025, 7, 20, 0, 0, 0)
-    for(let i = 0; i < agazat.length; i++) {
-        let agazaEnd = new Date(agazat[i])
-        agazaEnd.setDate(agazaEnd.getDate() + NUMBER_OF_DAYS_OFF)
-        let passed = agazat[i] < new Date()
-
-        let remainingAfter = Math.floor((geishEnd - agazaEnd) / (1000 * 60 * 60 * 24))
-        output.push(<tr><td>{(i === 6) ? "7?" : i + 1}</td><td>{renderDate(agazat[i])}</td><td>{renderDate(agazaEnd)}</td><td>{(i === 6) ? '😞' : (passed) ? '✅' : '❌'}</td><td>{remainingAfter}</td></tr>)
-    }
-    return output
 }
 
 function renderDate(date)
@@ -52,12 +37,35 @@ function renderDate(date)
     return `${date.getFullYear()} / ${date.getMonth() + 1} / ${date.getDate()}`
 }
 
+function renderAgazat(agazatStartEndPair) {
+    let output = []
+    const geishEnd = new Date(2025, 7, 20, 0, 0, 0)
+    for (let i = 0; i < agazatStartEndPair.length; i++) {
+        let start = agazatStartEndPair[i][0]
+        let end = agazatStartEndPair[i][1]
+        let passed = start < new Date()
+        let remainingAfter = Math.floor((geishEnd - end) / (1000 * 60 * 60 * 24))
+        let agazaCount = i + 1
+        let passedText = (passed) ? '✅' : '❌'
+        output.push(
+            <tr key={i}>
+                <td>{agazaCount}</td>
+                <td>{renderDate(start)}</td>
+                <td>{renderDate(end)}</td>
+                <td>{passedText}</td>
+                <td>{remainingAfter}</td>
+            </tr>)
+    }
+    return output
+}
+
+
 function TimerTable({ months, weeks, days, hours, minutes, seconds, agazat, timeUntilNextAgaza }) {
     return (<table className="timer-table">
         <tr>
-            <th>Months</th>
-            <th>Weeks</th>
-            <th>Days</th>
+            <th>In Months</th>
+            <th>In Weeks</th>
+            <th>In Days</th>
             <th>Hours</th>
             <th>Minutes</th>
             <th>Seconds</th>
@@ -93,15 +101,87 @@ function getLastPassedAgaza(agazat) {
     return lastPassedAgaza
 }
 
-function insideAgaza(allAgazat) {
+function insideAgaza(agazatStartEndPair) {
     let now = new Date()
-    for (let i = 0; i < allAgazat.length; i++) {
-        let start = allAgazat[i][0]
-        let end = allAgazat[i][1]
+    for (let i = 0; i < agazatStartEndPair.length; i++) {
+        let start = agazatStartEndPair[i][0]
+        let end = agazatStartEndPair[i][1]
         if (start < now && end > now)
             return true
     }
     return false
+}
+
+function getTotalAgazaDaysCount(agazatStartEndPair) {
+    let count = 0
+    for (let i = 0; i < agazatStartEndPair.length; i++) {
+        let start = agazatStartEndPair[i][0]
+        let end = agazatStartEndPair[i][1]
+        count += Math.floor((end - start) / (1000 * 60 * 60 * 24))
+    }
+
+    count += specialDays.length
+    return count
+}
+
+function getRemainingAgazaDaysCount(agazatStartEndPair) {
+    let count = 0
+    for (let i = 0; i < agazatStartEndPair.length; i++) {
+        let start = agazatStartEndPair[i][0]
+        let end = agazatStartEndPair[i][1]
+        if (start > new Date())
+            count += Math.floor((end - start) / (1000 * 60 * 60 * 24))
+        else if (end > new Date())
+            count += Math.floor((end - new Date()) / (1000 * 60 * 60 * 24))
+    }
+    for (let i = 0; i < specialDays.length; i++) {
+        let date = specialDays[i]
+        if (date > new Date())
+            count += 1
+    }
+    return count
+}
+
+function getTotalGeishDays(agazatStartEndPair) {
+    let geishStart = new Date(2024, 9, 4, 0, 0, 0)
+    let geishEnd = new Date(2025, 7, 20, 0, 0, 0)
+
+    return Math.floor((geishEnd - geishStart) / (1000 * 60 * 60 * 24)) - getTotalAgazaDaysCount(agazatStartEndPair)
+}
+
+function getRemainingGeishDays(agazatStartEndPair) {
+    // Is Today an agaza day / special day?
+    const today = new Date()
+    let isAgazaDay = false
+    if (isASpecialDay(today.getDate(), today.getMonth(), today.getFullYear()) || insideAgaza(agazatStartEndPair))
+        isAgazaDay = true
+
+    let startCountDate = today
+    if (isAgazaDay)
+    {
+        for (let i = 0; i < agazatStartEndPair.length; i++) {
+            let start = agazatStartEndPair[i][0]
+            let end = agazatStartEndPair[i][1]
+            if (start < today && end > today) {
+                startCountDate = end
+                break
+            }
+        }
+    }
+    let geishEnd = new Date(2025, 7, 20, 0, 0, 0)
+    return Math.floor((geishEnd - startCountDate) / (1000 * 60 * 60 * 24)) - getRemainingAgazaDaysCount(agazatStartEndPair)
+}
+
+function getAgazatStartEndPair(agazatStart)
+{
+    let agazatStartEndPair = []
+    for (let i = 0; i < agazatStart.length; i++) {
+        let start = agazatStart[i]
+        let end = new Date(start)
+        end.setDate(end.getDate() + NUMBER_OF_DAYS_OFF)
+        agazatStartEndPair.push([start, end])
+    }
+    return agazatStartEndPair
 }
 
 export default function Geish() {
@@ -120,7 +200,7 @@ export default function Geish() {
 
         setMonth(Math.floor(distance / (1000 * 60 * 60 * 24 * 30)))
         setDays(Math.floor(distance / (1000 * 60 * 60 * 24)))
-        setWeeks(Math.floor(days / 7))
+        setWeeks(Math.floor(distance / (1000 * 60 * 60 * 24 * 7)))
         setHours(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)))
         setMinutes(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)))
         setSeconds(Math.floor((distance % (1000 * 60)) / 1000))
@@ -130,37 +210,29 @@ export default function Geish() {
     // Update the distance every second
     setInterval(calculateDistance, 1000)
 
-    let agazatArray = getAllAgazat()
-    let allAgazat = []
-    for (let i = 0; i < agazatArray.length; i++) {
-        let start = agazatArray[i]
-        if (i === 1)
-            start.setDate(start.getDate() + 1)
-        let end = new Date(start)
-        end = new Date(end.setDate(end.getDate() + NUMBER_OF_DAYS_OFF))
-        allAgazat.push([start, end])
-    }
 
-    let agazatDaysCount = agazat * 7
-    let agazatTable = renderAgazat(agazatArray)
+    let agazatArrayStart = getAllAgazatStart()
+    let agazatStartEndPair = getAgazatStartEndPair(agazatArrayStart)
+    let agazatTable = renderAgazat(agazatStartEndPair)
 
-    let lastPassedAgaza = getLastPassedAgaza(agazatArray)
-    let geishDays = days - (agazatDaysCount);
+    let lastPassedAgaza = getLastPassedAgaza(agazatStartEndPair)
+    let geishDays = getRemainingGeishDays(agazatStartEndPair);
 
     let timeUntilNextAgaza = Math.floor((lastPassedAgaza - new Date()) / (1000 * 60 * 60 * 24))
 
     let today = new Date()
-    if (insideAgaza(allAgazat))
+    if (insideAgaza(agazatStartEndPair))
         timeUntilNextAgaza = "In Agaza :))"
     else if (isASpecialDay(today.getDate(), today.getMonth(), today.getFullYear()))
         timeUntilNextAgaza = "SPECIAL DAY"
+    let remainingVacations = getRemainingAgazaDaysCount(agazatStartEndPair)
 
     // Render the Geish component
     return (
         <div className="main-container">
             <div className="geish-container">
                 <div className="timer-box">
-                    <div className="timer-header">Hanet ya Sayofa</div>
+                    <div className="timer-header">Hanet ya Sayofa 🎸</div>
                     <TimerTable
                         months={month}
                         weeks={weeks}
@@ -177,7 +249,7 @@ export default function Geish() {
                             <th>Geish Days</th>
                         </tr>
                         <tr>
-                            <td>{agazatDaysCount}</td>
+                            <td>{remainingVacations}</td>
                             <td>{geishDays}</td>
                         </tr>
                     </table>
@@ -204,7 +276,7 @@ export default function Geish() {
                 </div>
             </div>
             <div className="calendar-container">
-                <Calendar allAgazat={allAgazat}></Calendar>
+                <Calendar allAgazat={agazatStartEndPair}></Calendar>
             </div>
         </div>
     )

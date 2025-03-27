@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './Calendar.css';
 
-const daysIDidNotGet = [
+export const daysIDidNotGet = [
   new Date(2025, 0, 5, 0, 0, 0),
   new Date(2025, 1, 2, 0, 0, 0),
   new Date(2025, 2, 2, 0, 0, 0),
@@ -10,7 +10,7 @@ const daysIDidNotGet = [
   new Date(2025, 2, 4, 0, 0, 0),
 ]
 
-const specialDays = [
+export const specialDays = [
   new Date(2025, 1, 5, 0 ,0 ,0),
   new Date(2025, 1, 6, 0 ,0 ,0),
   new Date(2025, 1, 7, 0 ,0 ,0),
@@ -30,6 +30,14 @@ const specialDays = [
   new Date(2025, 2, 20, 0 ,0 ,0),
   new Date(2025, 2, 21, 0 ,0 ,0),
   new Date(2025, 2, 22, 0 ,0 ,0),
+  new Date(2025, 2, 22, 0 ,0 ,0),
+  new Date(2025, 2, 27, 0 ,0 ,0),
+  new Date(2025, 2, 28, 0 ,0 ,0),
+  new Date(2025, 2, 29, 0 ,0 ,0),
+  new Date(2025, 2, 29, 0 ,0 ,0),
+  new Date(2025, 2, 30, 0 ,0 ,0),
+  new Date(2025, 2, 31, 0 ,0 ,0),
+  new Date(2025, 3, 1, 0 ,0 ,0),
 ]
 
 function isDateIDidnotGet(day, month, year) {
