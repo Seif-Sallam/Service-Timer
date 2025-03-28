@@ -126,19 +126,30 @@ function getTotalAgazaDaysCount(agazatStartEndPair) {
 
 function getRemainingAgazaDaysCount(agazatStartEndPair) {
     let count = 0
+    let today = new Date()
     for (let i = 0; i < agazatStartEndPair.length; i++) {
         let start = agazatStartEndPair[i][0]
         let end = agazatStartEndPair[i][1]
-        if (start > new Date())
-            count += Math.floor((end - start) / (1000 * 60 * 60 * 24))
-        else if (end > new Date())
-            count += Math.floor((end - new Date()) / (1000 * 60 * 60 * 24))
+
+        // A full agaza
+        if (start > today)
+        {
+            count += Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1
+            console.log("Count1: ", count)
+        }
+        else if (end > today) // from end to today
+        {
+            count += Math.floor((end - today) / (1000 * 60 * 60 * 24)) + 1
+            console.log("Count2: ", count)
+        }
     }
-    for (let i = 0; i < specialDays.length; i++) {
+    let i = 0
+    for (i = 0; i < specialDays.length; i++) {
         let date = specialDays[i]
-        if (date > new Date())
-            count += 1
+        if (date > today)
+            break
     }
+    count += specialDays.length - i + 1
     return count
 }
 
