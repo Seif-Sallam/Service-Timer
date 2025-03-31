@@ -38,6 +38,7 @@ export const specialDays = [
   new Date(2025, 2, 30, 0 ,0 ,0),
   new Date(2025, 2, 31, 0 ,0 ,0),
   new Date(2025, 3, 1, 0 ,0 ,0),
+  new Date(2025, 3, 2, 0 ,0 ,0),
 ]
 
 function isDateIDidnotGet(day, month, year) {
