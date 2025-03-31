@@ -135,12 +135,10 @@ function getRemainingAgazaDaysCount(agazatStartEndPair) {
         if (start > today)
         {
             count += Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1
-            console.log("Count1: ", count)
         }
         else if (end > today) // from end to today
         {
             count += Math.floor((end - today) / (1000 * 60 * 60 * 24)) + 1
-            console.log("Count2: ", count)
         }
     }
     let i = 0
