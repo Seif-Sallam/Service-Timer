@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Service-Timer/static/css/main.94c24d49.css",
-    "main.js": "/Service-Timer/static/js/main.61add218.js",
+    "main.js": "/Service-Timer/static/js/main.1e70b85e.js",
     "index.html": "/Service-Timer/index.html",
     "main.94c24d49.css.map": "/Service-Timer/static/css/main.94c24d49.css.map",
-    "main.61add218.js.map": "/Service-Timer/static/js/main.61add218.js.map"
+    "main.1e70b85e.js.map": "/Service-Timer/static/js/main.1e70b85e.js.map"
   },
   "entrypoints": [
     "static/css/main.94c24d49.css",
-    "static/js/main.61add218.js"
+    "static/js/main.1e70b85e.js"
   ]
 }
