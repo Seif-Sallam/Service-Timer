@@ -14,9 +14,9 @@ function getAllAgazatStart() {
         if (index === 1) {
             firstAgaza.setDate(firstAgaza.getDate() + 1)
         }
-        else if (index === 4) {
-            firstAgaza = (new Date(2025, 1, 13, 0, 0, 0))
-        }
+        // else if (index === 4) {
+        //     firstAgaza = (new Date(2025, 1, 13, 0, 0, 0))
+        // }
         else if (index === 5) {
             firstAgaza = new Date(2025, 3, 8, 0, 0, 0)
         }
