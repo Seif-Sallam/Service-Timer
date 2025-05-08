@@ -86,15 +86,15 @@ function TimerTable({ months, weeks, days, hours, minutes, seconds, agazat, time
 }
 
 function getLastPassedAgaza(agazat) {
-    let lastPassedAgaza = agazat[0]
+    let lastPassedAgaza = agazat[0][1]
     for (let i = 0; i < agazat.length; i++) {
-        if (agazat[i] < new Date())
+        if (agazat[i][1] < new Date())
         {
             continue
         }
         else
         {
-            lastPassedAgaza = agazat[i]
+            lastPassedAgaza = agazat[i][1]
             break
         }
     }
@@ -234,6 +234,8 @@ export default function Geish() {
         timeUntilNextAgaza = "In Agaza :))"
     else if (isASpecialDay(today.getDate(), today.getMonth(), today.getFullYear()))
         timeUntilNextAgaza = "SPECIAL DAY"
+    else
+        timeUntilNextAgaza = Math.floor((lastPassedAgaza - new Date()) / (1000 * 60 * 60 * 24))
     let remainingVacations = getRemainingAgazaDaysCount(agazatStartEndPair)
 
     // Render the Geish component
