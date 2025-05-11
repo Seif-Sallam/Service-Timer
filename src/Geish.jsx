@@ -39,7 +39,7 @@ function renderDate(date)
 
 function renderAgazat(agazatStartEndPair) {
     let output = []
-    const geishEnd = new Date(2025, 7, 20, 0, 0, 0)
+    const geishEnd = new Date(2025, 7, 19, 0, 0, 0)
     for (let i = 0; i < agazatStartEndPair.length; i++) {
         let start = agazatStartEndPair[i][0]
         let end = agazatStartEndPair[i][1]
