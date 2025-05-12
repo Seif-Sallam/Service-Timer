@@ -94,8 +94,7 @@ function getLastPassedAgaza(agazat) {
         }
         else
         {
-            lastPassedAgaza = agazat[i][1]
-            break
+            return agazat[i][0]
         }
     }
     return lastPassedAgaza
