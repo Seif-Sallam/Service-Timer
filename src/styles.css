@@ -230,7 +230,16 @@ td {
     flex: 1 1 100%; /* Take full width on smaller screens */
     margin-right: 0; /* Remove margin on smaller screens */
     /* Add scroll bar for smaller screens */
-    overflow: auto;
+    overflow: visible;
+  }
+  .main-container {
+    transform: scale(0.8); /* Shrink to 80% of its original size */
+  }
+}
+
+@media(max-height: 660px) {
+  .geish-container, .calendar-container {
+    overflow: visible;
   }
   .main-container {
     transform: scale(0.8); /* Shrink to 80% of its original size */
