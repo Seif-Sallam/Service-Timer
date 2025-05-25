@@ -146,7 +146,7 @@ function getRemainingAgazaDaysCount(agazatStartEndPair) {
         if (date > today)
             break
     }
-    count += specialDays.length - i + 1
+    count += specialDays.length - i
     return count
 }
 
